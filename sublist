@@ -1,0 +1,16 @@
+;;;
+;;; random sublist generator
+;;; alice 16/12/12
+;;;
+
+(defun sublist (n L)
+  "returns a list containing n randomly selected elements of list L"
+  (sublist-helper n nil L))
+
+(defun sublist-helper (n new-list L)
+  (cond ((= n 0) new-list)
+  (t
+	 (let ((element (nth (random (length L)) L)))
+	   (sublist-helper (- n 1) 
+			   (cons element new-list)
+			   (remove-if #'(lambda (x) (equal x element)) L))))))
