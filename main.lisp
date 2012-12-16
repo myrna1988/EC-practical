@@ -1,3 +1,7 @@
+;;;
+;;; added 16/12/12
+;;;
+
 ;;;; program is started by calling the main function.
 ;;;; the variables that are given as input are:
 ;;;; pop size, which fitness function, tournament size, Pc, Uniform/ 2-point crossover
