@@ -11,9 +11,11 @@
 ;; type is either '2-point or 'uniform
 (defun crossover (parents pc type)
   (cond ((equal type '2-point) (2-point parents pc nil))
-  ((equal type 'uniform) (uniform parents pc nil))
+	((equal type 'uniform) (uniform parents pc nil))
 	(t "SOMETHING IS WRONG HERE")))
 
+;; performs 2-point crossover on pairs of parents with pc probability
+;; adds pairs of parents to child-strings uncrossed with 1-pc probability
 (defun 2-point (parents pc child-strings)
   (cond ((null parents) child-strings)
 	(t 
@@ -53,5 +55,41 @@
 			     (rest parent2)
 			     (- start 1)
 			     (- end 1)
+			     (append child1 (list (first parent2)))
+			     (append child2 (list (first parent1)))))))))
+  
+;; performs uniform crossover on pairs of parents with pc probability
+;; adds pairs of parents to child-strings uncrossed with 1-pc probability 
+(defun uniform (parents pc child-strings)
+  (cond ((null parents) child-strings)
+	(t 
+	 (let* ((string1 (first (first parents)))
+		(string2 (first (second parents)))
+		(new-strings (uniform-aux string1 
+					  string2
+					  nil
+					  nil)))
+	   (cond ((<= (random 1.0) pc)
+		  (uniform (rest (rest parents)) 
+			   pc 
+			   (append child-strings new-strings)))
+		 (t 
+		  (uniform (rest (rest parents)) 
+			   pc 
+			   (append child-strings (append (list string1) (list string2))))))))))
+
+;; performs uniform crossover on individual parents 
+;; returns a list of two new child strings  
+(defun uniform-aux (parent1 parent2 child1 child2)
+  (cond ((null parent1) (list child1 child2))
+	(t
+	 (cond ((= (random 2) 0)
+		(uniform-aux (rest parent1) 
+			     (rest parent2)
+			     (append child1 (list (first parent1)))
+			     (append child2 (list (first parent2)))))
+	       (t
+		(uniform-aux (rest parent1)
+			     (rest parent2)
 			     (append child1 (list (first parent2)))
 			     (append child2 (list (first parent1)))))))))
