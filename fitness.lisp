@@ -1,3 +1,6 @@
+;; added 17/12/12
+;; by Myrna
+
 (defun co (individual)
  (if individual
   (+ (first individual) (co (rest individual)))
