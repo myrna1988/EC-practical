@@ -11,17 +11,16 @@
 ;; after the population is generated, it calls a fitness function
 
 ;;;; generate population
-
-;; the list 'pop' starts empty but adds individuals by calling genList
-(let ((pop nil))
- (defun genPop (p)
-  (dotimes (i p pop) (setq pop (cons (genList) pop))) ))
-
-;; this function generates a list of 100 bits
-(let ((list (make-list 0)))
- (defun genList ()
-  (dotimes (i 100 list) (setq list (cons (random 2) list))) ))
-
+(defun genPop (popSize fitFun)
+ (let* ((individual (genInd 100)) 
+       (fitness (case fitFun 
+             (1 (co individual)) 
+             (2 (sco individual))
+             (3 (dTrapFun individual))
+             (4 (nTrapFun individual)) )))
+  (if (> popSize 0)
+   (cons (list individual fitness) (genPop (- popSize 1) fitFun))
+    nil)))
   
 ;;;; fitness functions
   
