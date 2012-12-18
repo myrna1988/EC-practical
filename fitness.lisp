@@ -13,9 +13,9 @@
   (+ (* (first individual) bit) (sco2 (rest individual) (+ bit 1)))
    0)) 
 
-(defun dTrapFun (individual) trapFun (individual 4 1))
+(defun dTrapFun (individual) (trapFun individual 4 1))
 
-(defun nTrapFun (individual) trapFun (individual 4 2.5))
+(defun nTrapFun (individual) (trapFun individual 4 2.5))
 
 (defun trapFun (individual k d)
  (let ((sublist (sub individual nil k)))
